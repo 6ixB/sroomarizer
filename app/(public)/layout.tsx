@@ -12,8 +12,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "AI Resume Grader - Sroomarizer",
-  description: "AI powered resume grader and summarizer",
+  title: "AI-Powered Resume Analyzer - Sroomarizer",
+  description: "AI-Powered Resume Analyzer",
 };
 
 export default function RootLayout({
@@ -36,7 +36,7 @@ export default function RootLayout({
             fontSans.variable,
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <NavBar />
             {children}
           </ThemeProvider>
