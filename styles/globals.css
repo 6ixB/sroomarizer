@@ -68,6 +68,18 @@
   }
 }
 
+::-webkit-scrollbar {
+  @apply h-2.5 w-2.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full border-[1px] border-solid border-transparent bg-border bg-clip-padding;
+}
+
 .cl-formButtonPrimary {
   @apply inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md bg-primary px-3 font-medium text-primary-foreground !shadow-none ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
 }

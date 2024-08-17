@@ -5,9 +5,9 @@ import { Icons } from "../icons";
 import Link from "next/link";
 import { ModeToggle } from "../mode-toggle";
 
-export default function NavBar() {
+export default function Header() {
   return (
-    <header className="sticky top-0 z-20 border-b border-gray-200 bg-opacity-30 p-4 backdrop-blur-lg backdrop-filter dark:border-gray-900">
+    <header className="sticky top-0 z-50 border-b border-gray-200 bg-background p-4 dark:border-gray-900">
       <div className="container mx-auto flex justify-between">
         <div className="flex items-center gap-x-8">
           <Link
