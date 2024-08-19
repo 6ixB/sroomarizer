@@ -4,6 +4,7 @@ import { NavMenu } from "./nav-menu";
 import { Icons } from "../icons";
 import Link from "next/link";
 import { ModeToggle } from "../mode-toggle";
+import { User, UserCircle, UserCircle2 } from "lucide-react";
 
 export default function Header() {
   return (
@@ -29,6 +30,11 @@ export default function Header() {
         <div className="flex items-center gap-x-4 text-sm font-medium">
           The Perfect Way to Get Your Resume Graded 📝 🎓 ✨
           <ModeToggle />
+          <SignedIn>
+              <Link href="/user-profile">
+                <UserCircle2/>
+              </Link>
+            </SignedIn>
         </div>
       </div>
     </header>
