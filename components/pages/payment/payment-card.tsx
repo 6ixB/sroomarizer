@@ -1,5 +1,5 @@
-import * as React from "react"
- 
+"use client"
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -18,8 +18,30 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+  } from "@/components/ui/alert"
+import { Wallet } from "lucide-react"
+import { useState } from "react"
 
 export function PaymentCard() {
+    const [amount, setAmount] = useState<number>();
+    const [status, setStatus] = useState<number>();
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (!isNaN(Number(value)) && value.trim() !== "") {
+            setAmount(Number(value));
+            setStatus(0);
+        } else {
+            setAmount(undefined)
+            setStatus(1);
+        }
+    };
+    
+
     return(
         <Card className="w-[350px]">
             <CardHeader>
@@ -31,13 +53,27 @@ export function PaymentCard() {
                 <div className="grid w-full items-center gap-4 pb-4">
                 <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="amount">Desired Amount</Label>
-                    <Input id="amount" placeholder="Input your desired amount of token 🪙" />
+                    <Input id="amount" placeholder="Input your desired amount of token 🪙"  value={amount} onChange={handleInputChange} />
                 </div>
                 <div className="flex flex-col space-y-1.5">
+                    {
+                        status == 1 && <CardDescription className="text-red-400">Inputted value must be numeric !</CardDescription>
+                    }
                 <CardDescription>Get more value with every purchase! For every 50 tokens you buy, you'll receive 5 bonus tokens for free.</CardDescription>
                 </div>
                 </div>
             </form>
+            <div className="grid w-full items-center gap-4 pb-4">
+            {amount > 0 && (
+                <Alert>
+                    <Wallet className="h-4 w-4" />
+                    <AlertTitle>Total Purchase</AlertTitle>
+                    <AlertDescription>
+                        Your total is Rp {amount * 10000}
+                    </AlertDescription>
+                </Alert>
+            )}
+            </div>
             <hr/>
             <div className="grid w-full items-center gap-2 pt-4 pb-4">
                 <CardTitle>Payment Method</CardTitle>
