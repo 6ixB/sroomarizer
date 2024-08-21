@@ -5,7 +5,7 @@ import GradualSpacing from "@/components/magicui/gradual-spacing";
 import DotPattern from "@/components/magicui/dot-pattern";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SignInButton } from "@clerk/nextjs";
+import { ClerkLoaded, SignInButton } from "@clerk/nextjs";
 import BlurFade from "@/components/magicui/blur-fade";
 
 export default function HomeHero() {
@@ -40,9 +40,11 @@ export default function HomeHero() {
       </div>
       <div className="z-20 flex items-center justify-center">
         <BlurFade delay={0.5} inView>
-          <SignInButton>
-            <Button>Grade your Resume with AI</Button>
-          </SignInButton>
+          <ClerkLoaded>
+            <SignInButton>
+              <Button>Grade your Resume with AI</Button>
+            </SignInButton>
+          </ClerkLoaded>
         </BlurFade>
       </div>
       <DotPattern
