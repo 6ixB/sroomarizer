@@ -63,10 +63,13 @@ export function HomeFeatures() {
     <section className="flex flex-col gap-y-12">
       <div className="flex flex-col items-center justify-center gap-y-4 p-8">
         <div className="mx-auto text-center text-4xl font-normal text-black dark:text-white">
-          <FlipWords words={["Refine", "Enhance", "Optimize"]} />
+          <FlipWords
+            className="pe-2 ps-0"
+            words={["Refine", "Enhance", "Optimize"]}
+          />
           your resume with AI-driven insights
         </div>
-        <p className="text-md max-w-4xl text-center lg:text-lg">
+        <p className="max-w-4xl text-center lg:text-lg">
           Whether you&apos;re looking to polish your existing qualifications or
           transform your resume into a compelling narrative, our AI-driven
           insights provide the tools you need to stand out. Boost your chances

@@ -4,8 +4,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
-import Header from "@/components/nav/header";
-import { Footer } from "@/components/nav/footer";
+import { Footer } from "@/components/base/public/footer";
+import Header from "@/components/base/public/header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "AI-Powered Resume Analyzer",
 };
 
-export default function RootLayout({
+export default function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

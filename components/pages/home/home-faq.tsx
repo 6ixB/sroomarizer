@@ -61,47 +61,6 @@ export default function HomeFAQ() {
             you with quick insights and feedback on your resume.
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-7">
-          <AccordionTrigger>
-            Can the AI help with tailoring my resume for specific jobs?
-          </AccordionTrigger>
-          <AccordionContent>
-            Yes, the AI can suggest modifications to tailor your resume for
-            specific job roles by matching your skills and experiences with job
-            descriptions.
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-8">
-          <AccordionTrigger>
-            Is there a cost for using the AI Resume Analyzer?
-          </AccordionTrigger>
-          <AccordionContent>
-            We offer both free and premium versions of the service. The free
-            version provides basic analysis, while the premium version offers
-            in-depth feedback and additional features.
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-9">
-          <AccordionTrigger>
-            Can the AI analyze resumes in multiple languages?
-          </AccordionTrigger>
-          <AccordionContent>
-            Currently, the AI primarily supports English-language resumes, but
-            we are working on expanding support for other languages in the
-            future.
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-10">
-          <AccordionTrigger>
-            What are the benefits of using an AI Resume Analyzer?
-          </AccordionTrigger>
-          <AccordionContent>
-            The AI Resume Analyzer helps you optimize your resume by identifying
-            key strengths, highlighting areas for improvement, and ensuring your
-            resume is aligned with industry standards, increasing your chances
-            of landing a job interview.
-          </AccordionContent>
-        </AccordionItem>
       </Accordion>
     </section>
   );
