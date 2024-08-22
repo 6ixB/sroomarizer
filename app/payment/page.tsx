@@ -30,7 +30,7 @@ export default function PaymentPage(){
                     <Input placeholder=" 🔍 Invoice No. or ID" id="search"/>
                 </div>
             </div>
-            <div className="flex px-32 w-screen justify-left gap-16">
+            <div className="flex px-32 w-screen justify-left gap-8">
                 <div className="flex flex-col gap-2">
                     <p>Filter Date</p>
                     <div className="flex h-full">
