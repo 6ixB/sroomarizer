@@ -17,7 +17,10 @@ export function Navbar({ title }: NavbarProps) {
         <div className="flex flex-1 items-center justify-end space-x-2">
           <ModeToggle />
           <ClerkLoaded>
-            <UserButton />
+            <UserButton
+              userProfileUrl="/user-profile"
+              userProfileMode="navigation"
+            />
           </ClerkLoaded>
         </div>
       </div>
