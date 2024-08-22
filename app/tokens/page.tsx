@@ -1,4 +1,4 @@
-import { PaymentCard } from "@/components/pages/payment/payment-card";
+import { PaymentCard } from "@/components/pages/transaction/payment-card";
 
 export default function TokensPage(){
     return(
