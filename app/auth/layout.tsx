@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+import NextTopLoader from "nextjs-toploader";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
@@ -36,6 +37,7 @@ export default function AuthLayout({
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <NextTopLoader color="#7c3aed" />
             {children}
           </ThemeProvider>
         </body>

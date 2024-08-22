@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+import NextTopLoader from "nextjs-toploader";
+import ProtectedPanelLayout from "@/components/base/protected/protected-panel-layout";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
-import ProtectedPanelLayout from "@/components/base/protected/protected-panel-layout";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function ProtectedLayout({
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <NextTopLoader color="#7c3aed" />
             <ProtectedPanelLayout>{children}</ProtectedPanelLayout>
           </ThemeProvider>
         </body>
