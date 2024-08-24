@@ -4,7 +4,9 @@ import { UserProfile } from "@clerk/nextjs";
 export default function ProfilePage() {
   return (
     <ContentLayout title="Account">
-      <UserProfile />
+      <div className="flex h-full justify-center items-center">
+        <UserProfile />
+      </div>
     </ContentLayout>
   );
 }
