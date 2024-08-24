@@ -4,7 +4,9 @@ import { PaymentCard } from "@/components/pages/tokens/payment-card";
 export default function TokensPage() {
   return (
     <ContentLayout title="Tokens">
-      <PaymentCard />
+      <div className="flex h-full justify-center items-center">
+        <PaymentCard />
+      </div>
     </ContentLayout>
   );
 }
