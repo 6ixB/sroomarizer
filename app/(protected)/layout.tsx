@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import NextTopLoader from "nextjs-toploader";
 import ProtectedPanelLayout from "@/components/base/protected/protected-panel-layout";
+import { Toaster } from "@/components/ui/sonner";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
@@ -42,6 +43,7 @@ export default function ProtectedLayout({
             <NextTopLoader color="#7c3aed" />
             <ProtectedPanelLayout>{children}</ProtectedPanelLayout>
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
