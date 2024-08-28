@@ -6,6 +6,7 @@ export const exampleDataSchema = z.object({
   amount_purchase: z.number(),
   payment_status: z.enum(["Paid", "Pending", "Failed"]),
   payment_method: z.enum(["Credit Card", "Bank Transfer", "PayPal", "Debit Card"]),
+  token_amount: z.number()
 });
 
 export type exampleData = z.infer<typeof exampleDataSchema>;

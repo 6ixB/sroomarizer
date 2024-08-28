@@ -48,6 +48,20 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       );
     },
+  },  {
+    accessorKey: "token_amount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Token Amount" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("token_amount")}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "amount_purchase",

@@ -2,6 +2,7 @@
 
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,10 +33,12 @@ export function DataTableRowActions<TData>({
   const invoice_id = payment_object.invoice_id;
 
   return (
-      <Button
-          variant="ghost"
-          className="flex h-auto w-auto p-2 data-[state=open]:bg-muted border">
-          <span>View Detail</span>
-      </Button>
+      <Link href={`/detail/${invoice_id}`}>
+        <Button
+            variant="ghost"
+            className="flex h-auto w-auto p-2 data-[state=open]:bg-muted border">
+            <span>Payment</span>
+        </Button>
+      </Link>
   );
 }
