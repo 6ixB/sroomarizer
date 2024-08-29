@@ -6,16 +6,17 @@ import { ContentLayout } from "@/components/base/protected/content-layout";
 import { columns } from "@/components/pages/payment/columns";
 import { DataTable } from "@/components/pages/payment/data-table";
 import { taskSchema } from "@/lib/data/schema";
+import { exampleDataSchema } from "@/lib/data/example-data-schema";
 
 // Simulate a database read for tasks.
 async function getTasks() {
   const data = await fs.readFile(
-    path.join(process.cwd(), "lib/data/tasks.json"),
+    path.join(process.cwd(), "lib/data/example-data.json"),
   );
 
-  const tasks = JSON.parse(data.toString());
+  const exampleData = JSON.parse(data.toString());
 
-  return z.array(taskSchema).parse(tasks);
+  return z.array(exampleDataSchema).parse(exampleData);
 }
 
 export default async function PaymentPage() {
