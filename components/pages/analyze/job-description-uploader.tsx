@@ -34,7 +34,7 @@ export function JobDescriptionUploader({
 
   return (
     <div className="space-y-6">
-      <h1 className="font-bold">Job posting</h1>
+      <h1 className="font-bold">Job description</h1>
       <Card className="relative h-min">
         <Textarea
           className="pointer-events-auto h-52 w-full resize-none bg-transparent"
