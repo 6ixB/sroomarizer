@@ -1,10 +1,11 @@
 import { ContentLayout } from "@/components/base/protected/content-layout";
-import { Uploader } from "@/components/pages/analyze/uploader";
+import { AnalyzerUploader } from "@/components/pages/analyze/analyze-uploader";
+
 
 export default function AnalyzePage() {
   return (
     <ContentLayout title="Analyze">
-      <Uploader />
+      <AnalyzerUploader />
     </ContentLayout>
   );
 }
