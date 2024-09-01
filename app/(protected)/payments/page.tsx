@@ -30,11 +30,12 @@ export default async function PaymentPage() {
               Payment History
             </h2>
             <p className="text-muted-foreground">
-              Here&apos;s a list of all your payments.
+              {/* Here&apos;s a list of all your payments. */}
+              Coming soon...
             </p>
           </div>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        {/* <DataTable data={tasks} columns={columns} /> */}
       </div>
     </ContentLayout>
   );
