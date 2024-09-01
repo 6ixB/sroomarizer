@@ -33,7 +33,7 @@ export default function AnalyzeResultResume({
 
   return (
     <>
-      <div className="flex flex-row w-full justify-between">
+      <div className="flex w-full flex-row justify-between">
         <h1 className="font-bold">Showing top {num_top_resume} resumes</h1>
         {/* <div className="flex flex-row whitespace-nowrap gap-x-2 items-center text-sm">
           <span>Edit top</span>
@@ -120,11 +120,10 @@ function DisplayResumeRatingDetails({
 
   return (
     <div
-      
       className={`flex h-full w-full flex-col gap-y-4 px-8 py-4 ${single ?? "mt-4"} `}
     >
       {Object.entries(ratingDetails).map(([key, value]) => (
-        <div key={key} ref={ref}className="flex flex-col gap-y-2">
+        <div key={key} ref={ref} className="flex flex-col gap-y-2">
           <div className="flex w-full flex-row justify-between">
             <h3 className="font-semibold">
               {AnalyzeResultFeaturesMapping[key] ?? key}

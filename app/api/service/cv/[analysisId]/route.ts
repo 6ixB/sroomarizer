@@ -2,8 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
-const prisma = new PrismaClient();
-
 export async function GET(req: NextApiRequest, context:any) {
   const {params} = context;
   const analysisId = params.analysisId;

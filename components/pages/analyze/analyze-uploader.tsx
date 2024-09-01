@@ -23,6 +23,7 @@ import { AnalyzeFileData } from "@/lib/data/analyze/analyze-data";
 import { Notebook } from "lucide-react";
 import { JobDescriptionUploader } from "./job-description-uploader";
 import { Icons } from "@/components/icons";
+import { useUser } from "@clerk/nextjs";
 
 export function AnalyzerUploader() {
   const [jobText, setJobText] = useState<string>("");
@@ -43,23 +44,23 @@ export function AnalyzerUploader() {
   };
 
   const rateResume = async () => {
-    const resumeText = resumeData.map((resume) => resume.text);
-
     setIsLoading(true);
 
     try {
       analyzeSchema.parse({
         jobText: [jobText],
-        resumeText: resumeText,
+        resumeData: resumeData,
       });
     } catch (err) {
       setIsLoading(false);
       return toast.error(getErrorMessage(err));
     }
 
+    console.log(resumeData);
+
     const data = await rateResumeAction({
       jobText: [jobText],
-      resumeText: resumeText,
+      resumeData: resumeData,
     });
 
     // Prevent increased memory usage because large amount of text
@@ -102,9 +103,9 @@ export function AnalyzerUploader() {
                     onClick={rateResume}
                   >
                     {isLoading ? (
-                        <Icons.spinner className="animate-spin" />
-                    // <p className="animate-bounce font-bold text-lg">. . .</p>
+                      <Icons.spinner className="animate-spin" />
                     ) : (
+                      // <p className="animate-bounce font-bold text-lg">. . .</p>
                       "Analyze now"
                     )}
                   </Button>

@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
+import { TransactionAnalyzeJob, TransactionAnalyzeResume } from '@/lib/data/analyze/analyze-data';
 
 export async function POST(req: Request, res: NextApiResponse) {
-    const input = await req.json();
+  const input = await req.json();  
 
     try {
       const result = await prisma.$transaction(async (tx: any) => {
@@ -13,16 +12,16 @@ export async function POST(req: Request, res: NextApiResponse) {
           data: {
             userId: input.userId,
             date: new Date(),
-            educationTarget: input.educationTarget,
-            gpaTarget: input.gpaTarget,
-            jobTarget: input.jobTarget,
-            yearsTarget: input.yearsTarget,
-            experienceTarget: input.experienceTarget,
-            skillTarget: input.skillTarget,
-            softSkillTarget: input.softSkillTarget,
-            languageTarget: input.languageTarget,
+            educationTarget: input.educations,
+            gpaTarget: input.gpa,
+            jobTarget: input.job_titles,
+            yearsTarget: input.years_experiences,
+            experienceTarget: input.experiences,
+            skillTarget: input.skills,
+            softSkillTarget: input.soft_skills,
+            languageTarget: input.languages,
             cvs: {
-              create: input.cvs.map((cv: any) => ({
+              create: input.cvs.map((cv: TransactionAnalyzeResume) => ({
                 fileName: cv.fileName,
                 fileURL: cv.fileURL,
                 educationRating: cv.educationRating,
