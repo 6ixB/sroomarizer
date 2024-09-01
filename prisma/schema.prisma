@@ -50,7 +50,7 @@ model CV {
 }
 
 model Token{
-  userId  String @unique
+  userId  String @unique @id
   tokenAmount Int
 }
 

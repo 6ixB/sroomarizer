@@ -1,12 +1,16 @@
+import { currentUser } from '@clerk/nextjs/server';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
 export async function GET(request: Request, context:any) {
+    const user = await currentUser()
+
   try {
     const {params} = context;
-    const userId = params.userId.toString();
+    // const userId = params.userId.toString();
+    const userId = user?.id;
 
     if (!userId) {
       console.log("tidak ada userid")
@@ -29,11 +33,13 @@ export async function GET(request: Request, context:any) {
 }
 
 export async function POST(req: Request) {
-    const input = await req.json();
+    const user = await currentUser()
+    // const input = await req.json();
+    const userId = user?.id;
     try {
       const newToken = await prisma.token.create({
         data: {
-          userId: input.userId,
+          userId: userId,
           tokenAmount: Number(0)
         },
       });
@@ -47,9 +53,11 @@ export async function POST(req: Request) {
 } 
 
 export async function PUT(req: Request, context: any) {
+    const user = await currentUser()
     try {
       const { params } = context;
-      const userId = params.userId.toString();
+    //   const userId = params.userId.toString();
+    const userId = user?.id;
       const { input } = await req.json();
   
       if (!userId) {
