@@ -28,12 +28,10 @@ export default function AnalyzeResult({
   } catch (err) {
     return toast.error(getErrorMessage(err));
   }
+  
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-row gap-x-2">
-        <h1 className="font-bold">Results</h1>
-      </div>
       <AnalyzeResultJob jobFeatures={jobFeatures} />
       <AnalyzeResultResume resumeData={resumeData} resumeFeatures={resumeFeatures} />
 

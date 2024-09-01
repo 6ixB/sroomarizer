@@ -28,12 +28,19 @@ export default function AnalyzeResultJob({ jobFeatures }: AnalyzeResultJob) {
               <div className="space-y ms-4 mt-4 font-mono">
                 {Array.isArray(value) && value.length >= 1 ? (
                   value.length > 1 ? (
-                    value.map((item, index) => (
-                      <div key={index} className="relative flex">
-                        <span className="absolute top-0 h-2 w-2 translate-y-full rounded-full bg-gray-500"></span>
-                        <p className="ms-4">{item}</p>
-                      </div>
-                    ))
+                    value.map((item, index) =>
+                      typeof item === "object" && 'text' in item ? (
+                        <div key={index} className="relative flex">
+                          <span className="absolute top-0 h-2 w-2 translate-y-full rounded-full bg-gray-500"></span>
+                          <p className="ms-4">{item.text}</p>
+                        </div>
+                      ) : (
+                        <div key={index} className="relative flex">
+                          <span className="absolute top-0 h-2 w-2 translate-y-full rounded-full bg-gray-500"></span>
+                          <p className="ms-4">{item}</p>
+                        </div>
+                      ),
+                    )
                   ) : (
                     <p>{value}</p>
                   )

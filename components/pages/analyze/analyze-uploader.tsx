@@ -22,11 +22,13 @@ import AnalyzeResult from "./analyze-result";
 import { AnalyzeFileData } from "@/lib/data/analyze/analyze-data";
 import { Notebook } from "lucide-react";
 import { JobDescriptionUploader } from "./job-description-uploader";
+import { Icons } from "@/components/icons";
 
 export function AnalyzerUploader() {
   const [jobText, setJobText] = useState<string>("");
   const [resumeData, setResumeData] = useState<AnalyzeFileData[]>([]);
   const [analyzeResults, setAnalyzeResults] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleJobText = (text: string) => {
     setJobText(text);
@@ -43,12 +45,15 @@ export function AnalyzerUploader() {
   const rateResume = async () => {
     const resumeText = resumeData.map((resume) => resume.text);
 
+    setIsLoading(true);
+
     try {
       analyzeSchema.parse({
         jobText: [jobText],
         resumeText: resumeText,
       });
     } catch (err) {
+      setIsLoading(false);
       return toast.error(getErrorMessage(err));
     }
 
@@ -61,10 +66,12 @@ export function AnalyzerUploader() {
     const noTextResumeData: AnalyzeFileData[] = resumeData.map((file) => ({
       fileName: file.fileName,
       url: file.url,
-      text: '', 
+      text: "",
     }));
 
-    setResumeData(noTextResumeData)
+    setResumeData(noTextResumeData);
+
+    setIsLoading(false);
 
     setAnalyzeResults(data);
   };
@@ -72,10 +79,17 @@ export function AnalyzerUploader() {
   return (
     <div className="space-y-6">
       {analyzeResults ? (
-        <AnalyzeResult results={analyzeResults} resumeData={resumeData} resetAnalyze={resetAnalyze} />
+        <AnalyzeResult
+          results={analyzeResults}
+          resumeData={resumeData}
+          resetAnalyze={resetAnalyze}
+        />
       ) : (
         <>
-          <JobDescriptionUploader jobText={jobText} handleJobText={handleJobText} />
+          <JobDescriptionUploader
+            jobText={jobText}
+            handleJobText={handleJobText}
+          />
           <ResumeUploader handleResumeData={handleResumeData} />
           <div className="flex h-full w-full items-center">
             <TooltipProvider>
@@ -87,12 +101,17 @@ export function AnalyzerUploader() {
                     className="mx-auto flex"
                     onClick={rateResume}
                   >
-                    Analyze now
+                    {isLoading ? (
+                        <Icons.spinner className="animate-spin" />
+                    // <p className="animate-bounce font-bold text-lg">. . .</p>
+                    ) : (
+                      "Analyze now"
+                    )}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side={"top"} className="bg-transparent">
                   <AnimatedGradientText>
-                    <p>Use 1 token per resume file</p>
+                    <p>Use 1 token for each resume</p>
                   </AnimatedGradientText>
                 </TooltipContent>
               </Tooltip>
