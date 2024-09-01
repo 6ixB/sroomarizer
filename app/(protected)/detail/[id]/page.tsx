@@ -1,14 +1,6 @@
 'use client'
 
-import { promises as fs } from "fs";
-import path from "path";
-import { z } from "zod";
-
 import { ContentLayout } from "@/components/base/protected/content-layout";
-import { columns } from "@/components/pages/payment/columns";
-import { DataTable } from "@/components/pages/payment/data-table";
-import { taskSchema } from "@/lib/data/schema";
-import { exampleDataSchema } from "@/lib/data/example-data-schema";
 import { useParams } from "next/navigation";
 import {
   Table,
@@ -27,8 +19,63 @@ import {
 } from "@/components/ui/card"
 
 import Image from 'next/image';
+import { Button } from "@/components/ui/button";
 export default function PaymentPage() {
   const { id } = useParams();
+    
+  // const [transactionInput, setTransactionInput] = useState<transaction_input>({
+  //     userId: "user124",
+  //     date: new Date(),
+  //     tokenAmount: 100,
+  //     amountPurchase: 1500,
+  //     paymentStatus: "Completed",
+  //     paymentMethod: "Credit Card"
+  //   });
+  
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //   e.preventDefault();
+  
+    //   try {
+    //     const response = await fetch('/api/service/transaction/', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify(transactionInput),
+    //     });
+  
+    //     if (!response.ok) {
+    //       throw new Error('Failed to create transaction');
+    //     }
+  
+    //     const result = await response.json();
+    //     console.log('Transaction created successfully:', result);
+    //   } catch (error) {
+    //     console.error('Error creating transaction:', error);
+    //   }
+    // };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+  
+      try {
+        const response = await fetch('/api/service/transaction/user123/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to create transaction');
+        }
+  
+        const result = await response.json();
+        console.log('Transaction fetched successfully:', result);
+      } catch (error) {
+        console.error('Error fetching transaction:', error);
+      }
+    };
 
   return (
     <ContentLayout title="Payment Detail">
@@ -77,6 +124,7 @@ export default function PaymentPage() {
                 <CardContent>
                   <Image src="/tree.jpg" alt="Payment QR" width={500} height={300} />
                 </CardContent>
+                {/* <Button onClick={handleSubmit}>testing</Button> */}
               </Card>
             </div>      
         </div>
