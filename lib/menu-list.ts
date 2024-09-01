@@ -52,9 +52,9 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [],
         },
         {
-          href: "/analyze/history",
+          href: "/history",
           label: "Analysis Results",
-          active: pathname.includes("/analyze/history"),
+          active: pathname.includes("/history"),
           icon: LibraryBig,
           submenus: [],
         },

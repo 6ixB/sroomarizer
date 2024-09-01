@@ -1,11 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { currentUser } from '@clerk/nextjs/server';
 
+const prisma = new PrismaClient();
 export async function GET(request: Request, context:any) {
-  const {params} = context;
-  const userId = params.userId.toString();
+  const user = await currentUser();
     try {
+      const userId = user?.id;
       const analyses = await prisma.analysis.findMany({
         where: {
           userId: String(userId),
