@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
+import Header from "@/components/base/public/header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function AuthLayout({
         >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <NextTopLoader color="#7c3aed" />
+            <Header />
             {children}
           </ThemeProvider>
         </body>

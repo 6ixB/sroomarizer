@@ -5,7 +5,6 @@ import { z } from "zod";
 import { ContentLayout } from "@/components/base/protected/content-layout";
 import { columns } from "@/components/pages/payment/columns";
 import { DataTable } from "@/components/pages/payment/data-table";
-import { taskSchema } from "@/lib/data/schema";
 import { exampleDataSchema } from "@/lib/data/example-data-schema";
 
 // Simulate a database read for tasks.
@@ -31,11 +30,12 @@ export default async function PaymentPage() {
               Payment History
             </h2>
             <p className="text-muted-foreground">
-              Here&apos;s a list of all your payments.
+              {/* Here&apos;s a list of all your payments. */}
+              Coming soon...
             </p>
           </div>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        {/* <DataTable data={tasks} columns={columns} /> */}
       </div>
     </ContentLayout>
   );
