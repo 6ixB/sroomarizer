@@ -5,7 +5,6 @@ import { z } from "zod";
 import { ContentLayout } from "@/components/base/protected/content-layout";
 import { columns } from "@/components/pages/payment/columns";
 import { DataTable } from "@/components/pages/payment/data-table";
-import { taskSchema } from "@/lib/data/schema";
 import { exampleDataSchema } from "@/lib/data/example-data-schema";
 
 // Simulate a database read for tasks.

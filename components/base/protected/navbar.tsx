@@ -1,6 +1,7 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { SheetMenu } from "@/components/base/protected/sheet-menu";
 import { ClerkLoaded, UserButton } from "@clerk/nextjs";
+import { Coins } from "lucide-react";
 
 interface NavbarProps {
   title: string;
@@ -14,14 +15,18 @@ export function Navbar({ title }: NavbarProps) {
           <SheetMenu />
           <h1 className="font-bold">{title}</h1>
         </div>
-        <div className="flex flex-1 items-center justify-end space-x-2">
-          <ModeToggle />
+        <div className="flex flex-1 items-center justify-end gap-x-6">
+          <div className="flex items-center gap-x-2 text-xs font-bold">
+            <Coins className="size-4" />
+            132
+          </div>
           <ClerkLoaded>
             <UserButton
               userProfileUrl="/user-profile"
               userProfileMode="navigation"
             />
           </ClerkLoaded>
+          <ModeToggle />
         </div>
       </div>
     </header>

@@ -9,125 +9,126 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Wallet } from "lucide-react";
+import { ChevronLeft, Coins } from "lucide-react";
+import { defineStepper } from "@stepperize/react";
 import { useState } from "react";
+import TokenAmountCardContent from "./token-amount-card-content";
+import PaymentMethodCardContent from "./payment-method-card-content";
+import PaymentAwaitCardContent from "./payment-await-card-content";
+import Link from "next/link";
 
-export function PaymentCard() {
-  const [amount, setAmount] = useState<number>();
-  const [status, setStatus] = useState<number>();
+const { useStepper } = defineStepper(
+  { id: "token-amount" },
+  { id: "payment-method" },
+  { id: "payment-await" },
+);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (!isNaN(Number(value)) && value.trim() !== "") {
-      setAmount(Number(value));
-      setStatus(0);
-    } else {
-      setAmount(undefined);
-      setStatus(1);
-    }
-  };
+export default function PaymentCard() {
+  const stepper = useStepper();
+
+  const [amount, setAmount] = useState(10);
+  const [paymentMethod, setPaymentMethod] = useState<"qrCode" | "eWallet">(
+    "eWallet",
+  );
+  const [eWalletType, setEWalletType] = useState<"OVO" | "DANA" | "Shopee Pay">(
+    "Shopee Pay",
+  );
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full max-w-lg">
       <CardHeader>
-        <CardTitle>Top Up Your Token 🪙</CardTitle>
-        <CardDescription>
-          Enjoy our services by topping up your balance. Enter the amount
-          you&apos;d like to add.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-4 pb-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="amount">Desired Amount</Label>
-              <Input
-                id="amount"
-                placeholder="Input your desired amount of token 🪙"
-                value={amount}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              {status == 1 && (
-                <CardDescription className="text-red-400">
-                  Inputted value must be numeric !
-                </CardDescription>
-              )}
-              <CardDescription>
-                Get more value with every purchase! For every 50 tokens you buy,
-                you&apos;ll receive 5 bonus tokens for free.
-              </CardDescription>
-            </div>
-          </div>
-        </form>
-        <div className="grid w-full items-center gap-4 pb-4">
-          {amount && amount > 0 && (
-            <Alert>
-              <Wallet className="h-4 w-4" />
-              <AlertTitle>Total Purchase</AlertTitle>
-              <AlertDescription>
-                Your total is Rp {amount * 10000}
-              </AlertDescription>
-            </Alert>
+        <div className="flex items-center gap-x-4">
+          {!stepper.isFirst && stepper.current.id != "payment-await" && (
+            <Button variant="outline" size="icon" onClick={stepper.prev}>
+              <ChevronLeft className="size-6" />
+            </Button>
           )}
+          <CardTitle className="flex items-center gap-x-3">
+            <Coins /> Buy tokens
+          </CardTitle>
         </div>
-        <hr />
-        <div className="grid w-full items-center gap-2 pb-4 pt-4">
-          <CardTitle>Payment Method</CardTitle>
-          <CardDescription>
-            Choose a payment method for your transaction.
-          </CardDescription>
-        </div>
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>BCA Virtual Account</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="grid w-full items-center gap-4">
-                      Testing (harusnya ini nnti diisi cara2nya)
-                      <Button>Continue</Button>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>QRIS</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="grid w-full items-center gap-4">
-                      Testing (harusnya ini nnti diisi cara2nya)
-                      <Button>Continue</Button>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>Bank</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="grid w-full items-center gap-4">
-                      Testing (harusnya ini nnti diisi cara2nya)
-                      <Button>Continue</Button>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <CardDescription />
-            </div>
-          </div>
-        </form>
+        {stepper.switch({
+          "token-amount": (step) => (
+            <CardDescription className="space-y-2">
+              Select the amount of tokens you&apos;d like to purchase. Please
+              review and agree to the terms before completing the payment.
+              <br />
+              <br />
+              Our rates are as follows:&nbsp;
+              <span className="font-medium text-primary">
+                1 token = Rp2.500,00
+              </span>
+              .
+            </CardDescription>
+          ),
+          "payment-method": (step) => (
+            <CardDescription>
+              Choose your payment method to buy tokens, by clicking continue you
+              agree to the terms and conditions.&nbsp;
+              <span className="font-medium text-primary">
+                Please make sure the token amount is correct before proceeding
+              </span>
+              .
+            </CardDescription>
+          ),
+          "payment-await": (step) => (
+            <CardDescription>
+              Please complete the payment within the next 15 minutes to avoid
+              any issues with your purchase.
+            </CardDescription>
+          ),
+        })}
+      </CardHeader>
+      <CardContent className="grid gap-6">
+        {stepper.switch({
+          "token-amount": (step) => (
+            <TokenAmountCardContent
+              step={step}
+              amount={amount}
+              setAmount={setAmount}
+            />
+          ),
+          "payment-method": (step) => (
+            <PaymentMethodCardContent
+              step={step}
+              amount={amount}
+              paymentMethod={paymentMethod}
+              eWalletType={eWalletType}
+              setPaymentMethod={setPaymentMethod}
+              setEWalletType={setEWalletType}
+            />
+          ),
+          "payment-await": (step) => (
+            <PaymentAwaitCardContent
+              step={step}
+              amount={amount}
+              paymentMethod={paymentMethod}
+              eWalletType={eWalletType}
+            />
+          ),
+        })}
       </CardContent>
-      <CardFooter className="flex justify-between" />
+      <CardFooter className="block space-y-4">
+        {stepper.current.id != "payment-await" && (
+          <Button
+            className="w-full"
+            onClick={stepper.next}
+            disabled={eWalletType !== "Shopee Pay"}
+          >
+            {stepper.current.id === "payment-method"
+              ? paymentMethod !== "qrCode"
+                ? eWalletType !== "Shopee Pay"
+                  ? "Coming soon..."
+                  : "Checkout"
+                : "Coming soon..."
+              : "Continue"}
+          </Button>
+        )}
+        <CardDescription>
+          Need help? Contact us at&nbsp;
+          <Link href="mailto: sroomy@example.com">sroomy@example.com</Link>
+        </CardDescription>
+      </CardFooter>
     </Card>
   );
 }

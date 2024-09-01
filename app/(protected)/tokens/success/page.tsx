@@ -1,11 +1,11 @@
 import { ContentLayout } from "@/components/base/protected/content-layout";
-import PaymentCard from "@/components/pages/tokens/payment-card";
+import PaymentResultCard from "@/components/pages/tokens/payment-result-card";
 
-export default function TokensPage() {
+export default async function TokensSuccessPage() {
   return (
     <ContentLayout title="Tokens">
       <div className="flex h-full items-center justify-center">
-        <PaymentCard />
+        <PaymentResultCard />
       </div>
     </ContentLayout>
   );

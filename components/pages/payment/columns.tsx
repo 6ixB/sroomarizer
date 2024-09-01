@@ -1,11 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-
-import { labels, payment_status, priorities, statuses } from "@/lib/data/data";
+import { payment_status } from "@/lib/data/data";
 import { Task } from "@/lib/data/schema";
 import { DataTableColumnHeader } from "@/components/pages/payment/data-table-column-header";
 import { DataTableRowActions } from "@/components/pages/payment/data-table-row-actions";
@@ -13,13 +9,18 @@ import { DataTableRowActions } from "@/components/pages/payment/data-table-row-a
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
 
-  const month = date.toLocaleString('default', { month: 'short' });
+  const month = date.toLocaleString("default", { month: "short" });
   const day = date.getDate();
   const year = date.getFullYear();
 
-  const suffix = day === 1 || day === 21 || day === 31 ? 'st' :
-                 day === 2 || day === 22 ? 'nd' :
-                 day === 3 || day === 23 ? 'rd' : 'th';
+  const suffix =
+    day === 1 || day === 21 || day === 31
+      ? "st"
+      : day === 2 || day === 22
+        ? "nd"
+        : day === 3 || day === 23
+          ? "rd"
+          : "th";
 
   return `${month} ${day}${suffix}, ${year}`;
 }
@@ -30,7 +31,9 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Invoice Id" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("invoice_id")}</div>,
+    cell: ({ row }) => (
+      <div className="w-[80px]">{row.getValue("invoice_id")}</div>
+    ),
     enableSorting: true,
     enableHiding: false,
   },
@@ -48,7 +51,8 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       );
     },
-  },  {
+  },
+  {
     accessorKey: "token_amount",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Token Amount" />
