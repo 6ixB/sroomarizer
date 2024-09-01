@@ -113,7 +113,9 @@ export default function PaymentCard() {
           <Button
             className="w-full"
             onClick={stepper.next}
-            disabled={eWalletType !== "Shopee Pay"}
+            disabled={
+              eWalletType !== "Shopee Pay" || paymentMethod === "qrCode"
+            }
           >
             {stepper.current.id === "payment-method"
               ? paymentMethod !== "qrCode"

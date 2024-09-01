@@ -6,10 +6,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Transaction } from "@prisma/client";
 import { Coins } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function PaymentResultCard() {
+export default function PaymentResultCard({
+  transaction,
+}: {
+  transaction: Transaction | null;
+}) {
+  if (!transaction) redirect("/tokens");
+
   return (
     <Card className="w-full max-w-lg">
       <CardHeader>
@@ -24,10 +32,20 @@ export default function PaymentResultCard() {
       <CardContent className="grid gap-6">
         <div className="grid gap-2">
           <CardDescription>
-            Amount: <span className="font-medium">10 tokens</span>
+            Reference ID:&nbsp;
+            <span className="font-medium">{transaction.referenceId}</span>
           </CardDescription>
           <CardDescription>
-            Total: <span className="font-medium">Rp25.000,00</span>
+            Amount:&nbsp;
+            <span className="font-medium">
+              {transaction.tokenAmount}&nbsp;tokens
+            </span>
+          </CardDescription>
+          <CardDescription>
+            Total:{" "}
+            <span className="font-medium">
+              Rp{transaction.amountPurchase.toLocaleString()}
+            </span>
           </CardDescription>
         </div>
       </CardContent>

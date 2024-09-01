@@ -7,6 +7,8 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { PaymentRequest } from "xendit-node/payment_request/models";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@clerk/nextjs";
+import { QRCodeSVG } from "qrcode.react";
 
 interface PaymentAwaitCardContentProps {
   step: Step;
@@ -21,34 +23,40 @@ export default function PaymentAwaitCardContent({
   paymentMethod,
   eWalletType,
 }: PaymentAwaitCardContentProps) {
+  const { userId } = useAuth();
   const [paymentResponse, setPaymentResponse] = useState<PaymentRequest | null>(
     null,
   );
   const payAmount = amount * 2500;
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
-  const [qrCodeImageUri, setQrCodeImageUri] = useState<string | null>(null);
+  const [qrCodeString, setQrCodeString] = useState<string | null>(null);
 
   const createPayment = useCallback(async () => {
+    if (!userId) return;
+
     try {
       if (paymentMethod === "qrCode") {
-        const { response, qrCodeDataUrl } = await createQrPayment({
+        const { response, qrString } = await createQrPayment({
           amount: payAmount,
         });
 
         setPaymentResponse(response);
-        setQrCodeImageUri(qrCodeDataUrl);
+        setQrCodeString(qrString);
       } else {
-        const { response, paymentUrl, qrCodeDataUrl } =
-          await createEWalletPayment({ amount: payAmount, eWalletType });
+        const { response, paymentUrl, qrString } = await createEWalletPayment({
+          userId: userId,
+          amount: payAmount,
+          eWalletType,
+        });
 
         setPaymentResponse(response);
         setPaymentUrl(paymentUrl);
-        setQrCodeImageUri(qrCodeDataUrl);
+        setQrCodeString(qrString);
       }
     } catch (error: any) {
       console.log(JSON.stringify(error));
     }
-  }, [paymentMethod, eWalletType, payAmount]);
+  }, [paymentMethod, payAmount, userId, eWalletType]);
 
   useEffect(() => {
     createPayment();
@@ -57,7 +65,7 @@ export default function PaymentAwaitCardContent({
   return (
     <div className="flex w-full items-center justify-center">
       {paymentMethod === "qrCode" ? (
-        !paymentResponse || !qrCodeImageUri ? (
+        !paymentResponse || !qrCodeString ? (
           <Icons.spinner className="size-6 animate-spin" />
         ) : (
           <div className="flex w-full flex-col justify-center gap-y-4">
@@ -65,16 +73,17 @@ export default function PaymentAwaitCardContent({
               <ScanQrCode />
               Scan the QR code to complete the payment
             </div>
-            <Image
-              className="h-full w-full rounded-md border-2"
-              src={qrCodeImageUri}
-              alt="Generated QR Code Payment"
-              width={0}
-              height={0}
-            />
+            <div className="rounded-md bg-white p-12">
+              <QRCodeSVG
+                className="h-full w-full"
+                bgColor="#FFFFFF"
+                fgColor="#000000"
+                value={qrCodeString}
+              />
+            </div>
           </div>
         )
-      ) : !paymentResponse || !paymentUrl || !qrCodeImageUri ? (
+      ) : !paymentResponse || !paymentUrl || !qrCodeString ? (
         <Icons.spinner className="size-6 animate-spin" />
       ) : (
         <div className="flex w-full flex-col justify-center gap-y-4">
@@ -82,13 +91,14 @@ export default function PaymentAwaitCardContent({
             <ScanQrCode />
             Scan the QR code to complete the payment
           </div>
-          <Image
-            className="h-full w-full rounded-md border-2"
-            src={qrCodeImageUri}
-            alt="Generated QR Code Payment"
-            width={0}
-            height={0}
-          />
+          <div className="rounded-md bg-white p-12">
+            <QRCodeSVG
+              className="h-full w-full"
+              bgColor="#FFFFFF"
+              fgColor="#000000"
+              value={qrCodeString}
+            />
+          </div>
           <div className="flex w-full items-center justify-center gap-x-2 text-sm">
             or
           </div>

@@ -5,7 +5,10 @@ import {
   PaymentRequestParameters,
   PaymentRequest as PaymentRequestModel,
 } from "xendit-node/payment_request/models";
-import QRCode from "qrcode";
+import { PrismaClient } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
+
+const prisma = new PrismaClient();
 
 export async function createQrPayment({ amount }: { amount: number }) {
   const { PaymentRequest } = xenditClient;
@@ -31,18 +34,21 @@ export async function createQrPayment({ amount }: { amount: number }) {
       data,
     });
 
-  const qrString = response.paymentMethod.qrCode?.channelProperties?.qrString;
+  const qrString = response.paymentMethod.qrCode?.channelProperties
+    ?.qrString as string;
 
   return {
     response,
-    qrCodeDataUrl: await QRCode.toDataURL(qrString as string),
+    qrString,
   };
 }
 
 export async function createEWalletPayment({
+  userId,
   amount,
   eWalletType,
 }: {
+  userId: string;
   amount: number;
   eWalletType: string;
 }) {
@@ -50,13 +56,15 @@ export async function createEWalletPayment({
 
   const channelCode = eWalletType.toUpperCase().replace(" ", "").trim();
 
+  const referenceId = uuidv4();
+
   const data: PaymentRequestParameters | any = {
     country: "ID",
     amount: amount,
     paymentMethod: {
       ewallet: {
         channelProperties: {
-          successReturnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/tokens/success`,
+          successReturnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/tokens/success/${referenceId}`,
         },
         channelCode: channelCode,
       },
@@ -64,7 +72,7 @@ export async function createEWalletPayment({
       type: "EWALLET",
     },
     currency: "IDR",
-    referenceId: "example-ref-1234",
+    referenceId: referenceId,
   };
 
   const response: PaymentRequestModel =
@@ -77,11 +85,49 @@ export async function createEWalletPayment({
   }
 
   const paymentUrl = response.actions && response.actions[0]?.url;
-  const qrString = response?.actions && response.actions[1]?.qrCode;
+  const qrString = response?.actions && (response.actions[1]?.qrCode as string);
+
+  try {
+    await prisma.transaction.create({
+      data: {
+        userId: userId,
+        tokenAmount: amount / 2500,
+        amountPurchase: amount,
+        paymentId: response.id,
+        paymentMethod: eWalletType,
+        paymentStatus: "PENDING",
+        referenceId: referenceId,
+      },
+    });
+  } catch (error) {
+    console.error("Error inserting transaction:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
 
   return {
     response,
     paymentUrl,
-    qrCodeDataUrl: await QRCode.toDataURL(qrString as string),
+    qrString,
   };
+}
+
+export default async function getTransaction({
+  referenceId,
+}: {
+  referenceId: string;
+}) {
+  try {
+    const transaction = await prisma.transaction.findUnique({
+      where: {
+        referenceId: referenceId,
+      },
+    });
+
+    return transaction;
+  } catch (error) {
+    console.error("Error fetching transaction:", error);
+  }
+
+  return null;
 }

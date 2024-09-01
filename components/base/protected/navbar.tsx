@@ -2,24 +2,25 @@
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { SheetMenu } from "@/components/base/protected/sheet-menu";
-import { ClerkLoaded, UserButton } from "@clerk/nextjs";
+import { ClerkLoaded, useAuth, UserButton } from "@clerk/nextjs";
 import { Coins } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Icons } from "@/components/icons";
 
 interface NavbarProps {
   title: string;
 }
 
 export function Navbar({ title }: NavbarProps) {
-  const [token, setToken] = useState(0);
+  const { userId } = useAuth();
+  const [isFetching, setIsFetching] = useState(true);
+  const [tokens, setTokens] = useState(0);
 
   useEffect(() => {
     const fetchTransaction = async () => {
       try {
         // Fetch the token data
-        let response = await fetch(`/api/service/token/123/`, {
+        let response = await fetch(`/api/service/token/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -32,11 +33,9 @@ export function Navbar({ title }: NavbarProps) {
 
         const data = await response.json();
 
-        console.log(data);
-
         if (data.length === 0) {
           // If no data, create it
-          response = await fetch(`/api/service/token/123/`, {
+          response = await fetch(`/api/service/token/${userId}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -49,20 +48,20 @@ export function Navbar({ title }: NavbarProps) {
 
           // Get the result after creation
           const createdData = await response.json();
-          setToken(createdData.tokenAmount);
-          console.log("Token created successfully:", createdData);
+          setTokens(createdData.tokenAmount);
         } else {
           // If data exists, set the token
-          setToken(data[0].tokenAmount);
-          console.log("Token fetched successfully:", data);
+          setTokens(data[0].tokenAmount);
         }
       } catch (error) {
         console.error("Error fetching or creating token:", error);
+      } finally {
+        setIsFetching(false);
       }
     };
 
     fetchTransaction();
-  }, []);
+  }, [userId]);
 
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
@@ -74,7 +73,11 @@ export function Navbar({ title }: NavbarProps) {
         <div className="flex flex-1 items-center justify-end gap-x-6">
           <div className="flex items-center gap-x-2 text-xs font-bold">
             <Coins className="size-4" />
-            132
+            {isFetching ? (
+              <Icons.spinner className="size-4 animate-spin" />
+            ) : (
+              tokens
+            )}
           </div>
           <ClerkLoaded>
             <UserButton
