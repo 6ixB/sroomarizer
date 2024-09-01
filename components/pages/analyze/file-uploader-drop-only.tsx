@@ -16,90 +16,25 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  /**
-   * Value of the uploader.
-   * @type File[]
-   * @default undefined
-   * @example value={files}
-   */
   value?: File[];
-
-  /**
-   * Function to be called when the value changes.
-   * @type (files: File[]) => void
-   * @default undefined
-   * @example onValueChange={(files) => setFiles(files)}
-   */
   onValueChange?: (files: File[]) => void;
-
-  /**
-   * Function to be called when files are uploaded.
-   * @type (files: File[]) => Promise<void>
-   * @default undefined
-   * @example onUpload={(files) => uploadFiles(files)}
-   */
   onUpload?: (files: File[]) => Promise<void>;
-
-  /**
-   * Progress of the uploaded files.
-   * @type Record<string, number> | undefined
-   * @default undefined
-   * @example progresses={{ "file1.png": 50 }}
-   */
   progresses?: Record<string, number>;
-
-  /**
-   * Accepted file types for the uploader.
-   * @type { [key: string]: string[]}
-   * @default
-   * ```ts
-   * { "image/*": [] }
-   * ```
-   * @example accept={["image/png", "image/jpeg"]}
-   */
   accept?: DropzoneProps["accept"];
-
-  /**
-   * Maximum file size for the uploader.
-   * @type number | undefined
-   * @default 1024 * 1024 * 2 // 2MB
-   * @example maxSize={1024 * 1024 * 2} // 2MB
-   */
   maxSize?: DropzoneProps["maxSize"];
-
-  /**
-   * Maximum number of files for the uploader.
-   * @type number | undefined
-   * @default 1
-   * @example maxFileCount={4}
-   */
   maxFileCount?: DropzoneProps["maxFiles"];
-
-  /**
-   * Whether the uploader should accept multiple files.
-   * @type boolean
-   * @default false
-   * @example multiple
-   */
   multiple?: boolean;
-
-  /**
-   * Whether the uploader is disabled.
-   * @type boolean
-   * @default false
-   * @example disabled
-   */
   disabled?: boolean;
 }
 
-export function FileUploader(props: FileUploaderProps) {
+export function FileUploaderDropOnly(props: FileUploaderProps) {
   const {
     value: valueProp,
     onValueChange,
     onUpload,
     progresses,
     accept = {
-      "application/pdf": []
+      "application/pdf": [],
     },
     maxSize = 1024 * 1024 * 2,
     maxFileCount = 1,
@@ -171,7 +106,6 @@ export function FileUploader(props: FileUploaderProps) {
     onValueChange?.(newFiles);
   }
 
-  // Revoke preview url when component unmounts
   React.useEffect(() => {
     return () => {
       if (!files) return;
@@ -195,13 +129,14 @@ export function FileUploader(props: FileUploaderProps) {
         maxFiles={maxFileCount}
         multiple={maxFileCount > 1 || multiple}
         disabled={isDisabled}
+        //noClick // Prevent click behavior
       >
         {({ getRootProps, getInputProps, isDragActive }) => (
           <div
             {...getRootProps()}
             className={cn(
-              "group relative grid h-52 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
-              "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              "group relative grid h-32 w-full place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
+              "cursor-pointer ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               isDragActive && "border-muted-foreground/50",
               isDisabled && "pointer-events-none opacity-60",
               className,
@@ -209,40 +144,26 @@ export function FileUploader(props: FileUploaderProps) {
             {...dropzoneProps}
           >
             <input {...getInputProps()} />
-            {isDragActive ? (
-              <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                <div className="rounded-full border border-dashed p-3">
-                  <UploadIcon
-                    className="size-7 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                </div>
-                <p className="font-medium text-muted-foreground">
-                  Drop the files here
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                <div className="rounded-full border border-dashed p-3">
-                  <UploadIcon
-                    className="size-7 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div className="flex flex-col gap-px">
-                  <p className="font-medium text-muted-foreground">
-                    Drag {`'n'`} drop files here, or click to select files
-                  </p>
-                  <p className="text-sm text-muted-foreground/70">
-                    You can upload
-                    {maxFileCount > 1
-                      ? ` ${maxFileCount === Infinity ? "multiple" : maxFileCount}
-                      files (up to ${formatBytes(maxSize)} each)`
-                      : ` a file with ${formatBytes(maxSize)}`}
-                  </p>
-                </div>
-              </div>
-            )}
+            <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
+              {/* <div className="rounded-full border border-dashed p-3">
+                <UploadIcon
+                  className="size-7 text-muted-foreground"
+                  aria-hidden="true"
+                />
+              </div> */}
+              <p className="font-medium text-muted-foreground">
+                {isDragActive
+                  ? "Drop the files here"
+                  : "Type the job description"}
+              </p>
+              <p className="text-sm text-muted-foreground/70">
+                You can also drag and drop the PDF here
+                {maxFileCount > 1
+                  ? ` ${maxFileCount === Infinity ? "multiple" : maxFileCount}
+                  files (up to ${formatBytes(maxSize)} each)`
+                  : ``}
+              </p>
+            </div>
           </div>
         )}
       </Dropzone>
